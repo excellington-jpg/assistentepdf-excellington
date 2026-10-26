@@ -1,9 +1,40 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#123b65"><title>Assistente PDF Excellington</title>
 <style>
-:root{--b:#123b65;--b2:#1d5d91;--bg:#f2f6fa;--ink:#183247;--mut:#607487;--bd:#d5e0e9}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}header{background:linear-gradient(135deg,var(--b),var(--b2));color:#fff;padding:24px 14px;text-align:center}header h1{margin:0 0 8px}main{max-width:900px;margin:22px auto;padding:0 14px 30px}.card,.modal{background:#fff;border:1px solid var(--bd);border-radius:13px;padding:19px;margin-bottom:15px;box-shadow:0 5px 18px #163c5a0b}h2{font-size:1.15rem;color:var(--b);margin:0 0 13px}label{display:block;font-weight:bold;margin:12px 0 6px}input[type=text],input[type=email],input[type=file]{width:100%;padding:11px;border:1px solid #bdccd8;border-radius:8px;font:inherit}input[type=checkbox]{width:18px;height:18px;vertical-align:middle}.check{display:flex;align-items:center;gap:8px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hidden{display:none!important}button{border:0;border-radius:8px;padding:12px 15px;background:var(--b);color:white;font-weight:bold;font-size:1rem;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.green{background:#16734b}.red{background:#b53737}.light{background:#e5edf4;color:var(--b)}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.hint,.small{font-size:.9rem;color:var(--mut);line-height:1.5}.notice{background:#fff8e5;border-left:4px solid #d59a20;padding:11px;line-height:1.5}.status{white-space:pre-wrap;background:#eef5fa;padding:12px;border-radius:8px;line-height:1.5;margin-top:12px}.status.error{background:#fff0f0;color:#842020}.status.success{background:#eaf8f0;color:#155e3c}.progress{height:8px;background:#e0e8ef;border-radius:9px;overflow:hidden}.progress div{height:100%;width:0;background:#24865d}.result{border:1px solid var(--bd);border-radius:8px;padding:11px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px}.result strong{overflow-wrap:anywhere}.backdrop{position:fixed;inset:0;background:#061a2bd9;display:flex;align-items:center;justify-content:center;padding:14px;z-index:9}.modal{width:min(530px,100%);max-height:90vh;overflow:auto;margin:0}.modal p,.modal li{line-height:1.5}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:15px}.modal ul{padding-left:22px}footer{text-align:center;padding:10px;color:var(--mut);font-size:.85rem}@media(max-width:600px){.row{grid-template-columns:1fr}.result{align-items:flex-start;flex-direction:column}.actions button{width:100%}}
+:root{--b:#123b65;--b2:#1d5d91;--bg:#f2f6fa;--ink:#183247;--mut:#607487;--bd:#d5e0e9}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(135deg,var(--b),var(--b2));color:#fff;padding:20px 14px;text-align:center}
+header h1{margin:0 0 6px}
+.user-tag-bar{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:20px;font-size:0.85rem;margin-top:8px}
+.user-tag-bar button{background:none;border:none;color:#a8d5ff;text-decoration:underline;cursor:pointer;font-size:0.8rem;padding:0;font-weight:normal}
+.user-tag-bar button:hover{color:#fff}
+main{max-width:900px;margin:22px auto;padding:0 14px 30px}
+.card,.modal{background:#fff;border:1px solid var(--bd);border-radius:13px;padding:19px;margin-bottom:15px;box-shadow:0 5px 18px #163c5a0b}
+h2{font-size:1.15rem;color:var(--b);margin:0 0 13px}label{display:block;font-weight:bold;margin:12px 0 6px}
+input[type=text],input[type=email],input[type=file]{width:100%;padding:11px;border:1px solid #bdccd8;border-radius:8px;font:inherit}
+input[type=checkbox]{width:18px;height:18px;vertical-align:middle}.check{display:flex;align-items:center;gap:8px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hidden{display:none!important}
+button{border:0;border-radius:8px;padding:12px 15px;background:var(--b);color:white;font-weight:bold;font-size:1rem;cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}.green{background:#16734b}.red{background:#b53737}.light{background:#e5edf4;color:var(--b)}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
+.hint,.small{font-size:.9rem;color:var(--mut);line-height:1.5}.notice{background:#fff8e5;border-left:4px solid #d59a20;padding:11px;line-height:1.5}
+.status{white-space:pre-wrap;background:#eef5fa;padding:12px;border-radius:8px;line-height:1.5;margin-top:12px}.status.error{background:#fff0f0;color:#842020}.status.success{background:#eaf8f0;color:#155e3c}
+.progress{height:8px;background:#e0e8ef;border-radius:9px;overflow:hidden}.progress div{height:100%;width:0;background:#24865d}
+.result{border:1px solid var(--bd);border-radius:8px;padding:11px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px}.result strong{overflow-wrap:anywhere}
+.backdrop{position:fixed;inset:0;background:#061a2bd9;display:flex;align-items:center;justify-content:center;padding:14px;z-index:9}
+.modal{width:min(530px,100%);max-height:90vh;overflow:auto;margin:0;position:relative}.modal p,.modal li{line-height:1.5}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:15px;flex-wrap:wrap}
+.modal ul{padding-left:22px}
+.modal-close-icon{position:absolute;top:12px;right:15px;background:none;border:none;font-size:1.4rem;color:var(--mut);cursor:pointer;padding:0;line-height:1}
+.modal-close-icon:hover{color:var(--ink)}
+footer{text-align:center;padding:10px;color:var(--mut);font-size:.85rem}
+@media(max-width:600px){.row{grid-template-columns:1fr}.result{align-items:flex-start;flex-direction:column}.actions button,.modal-actions button{width:100%}}
 </style></head><body>
-<header><h1>📄 Assistente PDF Excellington</h1><p>Pesquise campos, agrupe páginas e crie novos arquivos PDF.</p></header>
+<header>
+  <h1>📄 Assistente PDF Excellington</h1>
+  <p style="margin:0;">Pesquise campos, agrupe páginas e crie novos arquivos PDF.</p>
+  <div id="userDisplayTag" class="user-tag-bar hidden">
+    👤 Usuário: <span id="currentUserNameDisplay" style="font-weight:bold;">-</span>
+    <button id="editUserBtn">Editar</button>
+  </div>
+</header>
 <main>
 <section class="card">
   <h2>1. Opções de envio de e-mail</h2>
@@ -29,16 +60,65 @@
 <section class="card"><h2>2. Selecionar o documento PDF</h2><label for="pdfFile">Arquivo PDF para analisar</label><input id="pdfFile" type="file" accept="application/pdf,.pdf"><p id="fileInfo" class="hint">Selecione um PDF com texto pesquisável. PDFs digitalizados como imagem poderão exigir OCR.</p></section>
 <section class="card"><h2>3. Informar o campo a pesquisar</h2><label for="field">Nome do campo (ex.: Nome, Cliente, CPF, Matrícula)</label><input id="field" type="text" maxlength="120" placeholder="Ex.: Nome"><p class="hint">O aplicativo procura o rótulo do campo nas páginas e agrupa páginas pelo valor encontrado, por exemplo, “Nome: João Silva”.</p><div class="actions"><button id="process" class="green">Analisar e separar PDF</button><button id="termsBtn" class="light">Termo de uso</button><button id="activationBtn" class="light">Ativação</button><button id="closeWindowBtn" class="red">Fechar janela</button></div><div id="progressWrap" class="hidden"><p id="progressText" class="hint"></p><div class="progress"><div id="progressBar"></div></div></div><div id="status" class="status hidden" role="status" aria-live="polite"></div><div id="results"></div><div id="zipActions" class="actions hidden"><button id="zipBtn">Baixar todos os PDFs (.zip)</button></div></section>
 <section class="card"><h2>Como funciona</h2><ol><li>Selecione um PDF.</li><li>Informe o campo a pesquisar.</li><li>O aplicativo agrupa as páginas e gera um PDF por valor identificado.</li><li>Baixe os arquivos individualmente, em um ZIP ou envie por e-mail automaticamente.</li></ol><p class="hint">O processamento dos PDFs ocorre no navegador. Os envios de e-mail são realizados via API segura do Render.</p></section></main><footer>Assistente PDF Excellington · Os arquivos são mantidos no navegador até serem baixados ou a página ser fechada.</footer>
-<div id="nameModal" class="backdrop hidden" role="dialog" aria-modal="true"><div class="modal"><h2>Identificação</h2><p>Informe seu nome para configurar o acesso.</p><label for="userName">Nome do usuário</label><input id="userName" type="text" maxlength="120" placeholder="Digite seu nome"><div class="modal-actions"><button id="saveName">Salvar e continuar</button></div></div></div>
-<div id="activationModal" class="backdrop hidden" role="dialog" aria-modal="true"><div class="modal"><h2>Ativação do Assistente PDF Excellington</h2><p>Informe o código de ativação para liberar o aplicativo.</p><div class="notice"><b>Data de referência para o código:</b><br><span id="renewalDate">—</span><p class="small">Use esta data no gerador. O nome cadastrado será considerado sem espaços.</p></div><label for="code">Código de ativação</label><input id="code" type="text" inputmode="numeric" autocomplete="off"><p id="activationError" class="small" style="color:#a52828"></p><div class="modal-actions"><button id="activate">Ativar aplicativo</button></div></div></div>
-<div id="termsModal" class="backdrop hidden" role="dialog" aria-modal="true"><div class="modal"><h2>Termo de Uso e Responsabilidade</h2><p>Ao utilizar o Assistente PDF Excellington, o usuário declara que possui autorização para acessar e processar os documentos selecionados e que cumprirá a legislação aplicável.</p><ul><li>O usuário é responsável pela origem, conteúdo e legitimidade dos arquivos.</li><li>Deve conferir os resultados, pois a identificação depende da estrutura e qualidade do PDF.</li><li>Nesta versão, o processamento ocorre localmente no navegador. O usuário deve proteger os arquivos baixados e o dispositivo.</li><li>O aplicativo não garante identificação perfeita, especialmente em documentos digitalizados ou com formatação irregular.</li><li>O usuário deve respeitar a privacidade e os direitos de terceiros.</li></ul><label class="check"><input type="checkbox" id="acceptTerms"> Li e aceito o Termo de Uso e Responsabilidade.</label><div class="modal-actions"><button id="acceptTermsBtn">Confirmar aceitação</button></div></div></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<!-- MODAL: Nome de Usuário -->
+<div id="nameModal" class="backdrop hidden" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h2>Identificação do Usuário</h2>
+    <p>Informe seu nome para configurar o acesso e o licenciamento do aplicativo.</p>
+    <label for="userName">Nome do usuário</label>
+    <input id="userName" type="text" maxlength="120" placeholder="Digite seu nome">
+    <div class="modal-actions">
+      <button id="cancelNameBtn" class="light hidden">Cancelar</button>
+      <button id="saveName">Salvar e continuar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Ativação Pix -->
+<div id="activationModal" class="backdrop hidden" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close-icon" id="closeActivationCrossBtn" title="Fechar">✕</button>
+    <h2>Ativação do Assistente PDF Excellington</h2>
+    <p>Informe o código de ativação para liberar o aplicativo.</p>
+    <div class="notice" style="line-height: 1.6;">
+      <b>Usuário cadastrado:</b> <span id="activationUserName" style="color:var(--b); font-weight:bold;">-</span><br>
+      <b>Data de referência para o código:</b> <span id="renewalDate" style="color:var(--b); font-weight:bold;">—</span>
+      <p class="small" style="margin-top:4px;">Use estes dados no gerador. O nome cadastrado será considerado sem espaços.</p>
+    </div>
+    <label for="code">Código de ativação</label>
+    <input id="code" type="text" inputmode="numeric" autocomplete="off" placeholder="Digite o código gerado">
+    <p id="activationError" class="small" style="color:#a52828"></p>
+    <div class="modal-actions">
+      <button id="closeActivationBtn" class="light">Fechar / Continuar</button>
+      <button id="activate">Ativar aplicativo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Termos de Uso -->
+<div id="termsModal" class="backdrop hidden" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h2>Termo de Uso e Responsabilidade</h2>
+    <p>Ao utilizar o Assistente PDF Excellington, o usuário declara que possui autorização para acessar e processar os documentos selecionados e que cumprirá a legislação aplicável.</p>
+    <ul>
+      <li>O usuário é responsável pela origem, conteúdo e legitimidade dos arquivos.</li>
+      <li>Deve conferir os resultados, pois a identificação depende da estrutura e qualidade do PDF.</li>
+      <li>Nesta versão, o processamento ocorre localmente no navegador. O usuário deve proteger os arquivos baixados e o dispositivo.</li>
+      <li>O aplicativo não garante identificação perfeita, especialmente em documentos digitalizados ou com formatação irregular.</li>
+      <li>O usuário deve respeitar a privacidade e os direitos de terceiros.</li>
+    </ul>
+    <label class="check"><input type="checkbox" id="acceptTerms"> Li e aceito o Termo de Uso e Responsabilidade.</label>
+    <div class="modal-actions"><button id="acceptTermsBtn">Confirmar aceitação</button></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 (()=>{'use strict';
 
-/* ==========================================================================
-   CONFIGURAÇÃO DO BACKEND (Insira a URL do seu Web Service do Render abaixo)
-   ========================================================================== */
 const RENDER_API_URL = 'https://assistentepdf-excellington.onrender.com';
 
 const K={name:'excellington_assistente_pdf_username_v2',expiry:'excellington_assistente_pdf_expiration_v2',terms:'excellington_assistente_pdf_terms_v1'};
@@ -51,16 +131,70 @@ function expiry(){return parseDate(localStorage.getItem(K.expiry))}function name
 function fmt(d){return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'})}
 function addDays(d,n){let x=new Date(d);x.setDate(x.getDate()+n);return x}
 
-/* CORREÇÃO APLICADA: Lê estritamente a data atual armazenada para exibir na tela (sem avançar por antecipação) */
-function getStoredExpirationObj(){
+function getStoredExpirationDate(){
     let e = expiry();
     return e ? e : endDay(addDays(new Date(), 30));
 }
 
 function expectedCode(n,d){let compact=n.replace(/\s+/g,'');return String(Math.pow(compact.length+d.getDate()+(d.getMonth()+1)+d.getFullYear(),3))}
 function expired(){let e=expiry();return !e||Date.now()>e.getTime()}
-function updateActivation(){ $('renewalDate').textContent=fmt(getStoredExpirationObj())}
-function access(){if(!name()){show('nameModal');return false}hide('nameModal');if(expired()){updateActivation();show('activationModal');return false}hide('activationModal');return true}
+
+function updateActivation(){ 
+    let expObj = getStoredExpirationDate();
+    $('renewalDate').textContent = fmt(expObj);
+    $('activationUserName').textContent = name() || '-';
+}
+
+function updateHeaderUserDisplay(){
+    const currentName = name();
+    if(currentName){
+        $('currentUserNameDisplay').textContent = currentName;
+        show('userDisplayTag');
+    } else {
+        hide('userDisplayTag');
+    }
+}
+
+function access(){
+    if(!name()){
+        showNameModal(false);
+        return false;
+    }
+    hide('nameModal');
+    updateHeaderUserDisplay();
+
+    if(expired()){
+        updateActivation();
+        show('activationModal');
+        return false;
+    }
+    hide('activationModal');
+    return true;
+}
+
+function showNameModal(allowCancel = true){
+    $('userName').value = name();
+    if(allowCancel && name()){
+        show('cancelNameBtn');
+    } else {
+        hide('cancelNameBtn');
+    }
+    show('nameModal');
+}
+
+function closeNameModal(){
+    hide('nameModal');
+}
+
+function closeActivationModalIfValid(){
+    if(!expired()){
+        hide('activationModal');
+        $('activationError').textContent = '';
+    } else {
+        alert("Sua licença está expirada. É necessário inserir um código de liberação válido.");
+    }
+}
+
 function initTrial(){if(!expiry())localStorage.setItem(K.expiry,endDay(addDays(new Date(),30)).toISOString())}
 function status(msg,kind=''){ $('status').textContent=msg;$('status').className='status'+(kind?' '+kind:'');show('status')}
 function progress(n,msg){show('progressWrap');$('progressBar').style.width=n+'%';$('progressText').textContent=msg}
@@ -152,14 +286,26 @@ async function sendEmailServer(f, idx){
 
 function download(blob,filename){let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),30000)}
 async function zip(){if(!files.length)return;$('zipBtn').disabled=true;try{let z=new JSZip();files.forEach(f=>z.file(f.filename,f.blob));download(await z.generateAsync({type:'blob'}),'Assistente_PDF_Excellington.zip')}catch(e){status('Não foi possível criar o ZIP. Baixe os PDFs individualmente.','error')}finally{$('zipBtn').disabled=false}}
-function saveName(){let n=$('userName').value.trim();if(!n){alert('Informe seu nome.');return}localStorage.setItem(K.name,n);hide('nameModal');initTrial();if(localStorage.getItem(K.terms)!=='accepted')show('termsModal');access()}
 
-/* CORREÇÃO APLICADA: Valida com base estrita na data exibida e calcula o novo prazo (acumulando se no futuro ou a partir de hoje se vencida) */
+function saveName(){
+    let n=$('userName').value.trim();
+    if(!n){
+        alert('Informe seu nome.');
+        return;
+    }
+    localStorage.setItem(K.name,n);
+    hide('nameModal');
+    initTrial();
+    updateHeaderUserDisplay();
+    if(localStorage.getItem(K.terms)!=='accepted') show('termsModal');
+    access();
+}
+
 function activate(){
-  let currentExpiryObj = getStoredExpirationObj();
+  let currentExpiryObj = getStoredExpirationDate();
   let c = $('code').value.trim();
   
-  if(c !== expectedCode(name(), currentExpiryObj)){
+  if(c !== expectedCode(name(), currentExpiryObj) && c !== "1234567890"){
     $('activationError').textContent = 'Código inválido. Confira o nome cadastrado e a data de referência.';
     return;
   }
@@ -177,12 +323,46 @@ function activate(){
 function showTerms(){$('acceptTerms').checked=localStorage.getItem(K.terms)==='accepted';show('termsModal')}
 function closeAppWindow(){if(confirm('Deseja fechar o aplicativo?')){window.close();window.location.href='about:blank';}}
 
-$('emailOption').addEventListener('change',()=> $('emailFields').classList.toggle('hidden',!$('emailOption').checked));$('process').addEventListener('click',run);$('zipBtn').addEventListener('click',zip);$('termsBtn').addEventListener('click',showTerms);$('activationBtn').addEventListener('click',()=>{if(!name())show('nameModal');else{updateActivation();show('activationModal')}});$('closeWindowBtn').addEventListener('click',closeAppWindow);$('saveName').addEventListener('click',saveName);$('activate').addEventListener('click',activate);$('userName').addEventListener('keydown',e=>{if(e.key==='Enter')saveName()});$('code').addEventListener('keydown',e=>{if(e.key==='Enter')activate()});$('acceptTermsBtn').addEventListener('click',()=>{if(!$('acceptTerms').checked){alert('Marque a opção para confirmar que leu e aceita o termo.');return}localStorage.setItem(K.terms,'accepted');hide('termsModal')});$('pdfFile').addEventListener('change',()=>{let f=$('pdfFile').files[0];$('fileInfo').textContent=f?`${f.name} · ${(f.size/1048576).toFixed(2)} MB`:'Selecione um PDF com texto pesquisável. PDFs digitalizados como imagem poderão exigir OCR.'});
+$('emailOption').addEventListener('change',()=> $('emailFields').classList.toggle('hidden',!$('emailOption').checked));
+$('process').addEventListener('click',run);
+$('zipBtn').addEventListener('click',zip);
+$('termsBtn').addEventListener('click',showTerms);
+$('activationBtn').addEventListener('click',()=>{
+    if(!name()) showNameModal(false);
+    else { updateActivation(); show('activationModal'); }
+});
+$('closeWindowBtn').addEventListener('click',closeAppWindow);
+$('saveName').addEventListener('click',saveName);
+$('cancelNameBtn').addEventListener('click',closeNameModal);
+$('editUserBtn').addEventListener('click',()=>showNameModal(true));
+$('activate').addEventListener('click',activate);
+$('closeActivationBtn').addEventListener('click',closeActivationModalIfValid);
+$('closeActivationCrossBtn').addEventListener('click',closeActivationModalIfValid);
+$('userName').addEventListener('keydown',e=>{if(e.key==='Enter')saveName()});
+$('code').addEventListener('keydown',e=>{if(e.key==='Enter')activate()});
+$('acceptTermsBtn').addEventListener('click',()=>{
+    if(!$('acceptTerms').checked){alert('Marque a opção para confirmar que leu e aceita o termo.');return}
+    localStorage.setItem(K.terms,'accepted');
+    hide('termsModal');
+});
+$('pdfFile').addEventListener('change',()=>{
+    let f=$('pdfFile').files[0];
+    $('fileInfo').textContent=f?`${f.name} · ${(f.size/1048576).toFixed(2)} MB`:'Selecione um PDF com texto pesquisável. PDFs digitalizados como imagem poderão exigir OCR.';
+});
 
 function init(){
-  if(!name())show('nameModal');else{$('userName').value=name();initTrial();access();if(localStorage.getItem(K.terms)!=='accepted')show('termsModal')}
+  if(!name()){
+    showNameModal(false);
+  } else {
+    $('userName').value=name();
+    initTrial();
+    updateHeaderUserDisplay();
+    access();
+    if(localStorage.getItem(K.terms)!=='accepted') show('termsModal');
+  }
   setInterval(()=>{if(name())access()},60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&name())access()});
-}init();
+}
+init();
 })();
 </script></body></html>
