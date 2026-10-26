@@ -5,7 +5,27 @@
 </style></head><body>
 <header><h1>📄 Assistente PDF Excellington</h1><p>Pesquise campos, agrupe páginas e crie novos arquivos PDF.</p></header>
 <main>
-<section class="card"><h2>1. Opções de envio de e-mail</h2><label class="check"><input type="checkbox" id="emailOption"> Desejo ativar o envio automático de e-mails via servidor seguro</label><div id="emailFields" class="hidden"><div class="row"><div><label for="sender">E-mail para receber cópias (CC)</label><input id="sender" type="email" placeholder="seuemail@gmail.com"></div><div><label for="domain">Domínio dos destinatários</label><input id="domain" type="text" placeholder="@outlook.com"></div></div><p class="hint">O destinatário será formado pelo valor encontrado no campo pesquisado + domínio (ex: joaosilva@outlook.com).</p><div class="notice">O envio automático é processado em segundo plano através do seu servidor seguro no Render. Suas senhas e dados confidenciais do Gmail ficam protegidos no servidor.</div></div></section>
+<section class="card">
+  <h2>1. Opções de envio de e-mail</h2>
+  <label class="check">
+    <input type="checkbox" id="emailOption"> Desejo ativar o envio automático de e-mails via servidor seguro
+  </label>
+  <div id="emailFields" class="hidden">
+    <div class="row">
+      <div>
+        <label for="sender">E-mail para receber cópias (CC)</label>
+        <input id="sender" type="email" placeholder="seuemail@gmail.com">
+      </div>
+      <div>
+        <label for="domain">Domínio dos destinatários</label>
+        <input id="domain" type="text" placeholder="@outlook.com">
+      </div>
+    </div>
+    <p class="hint">O destinatário será formado pelo valor encontrado no campo pesquisado + domínio (ex: joaosilva@outlook.com).</p>
+    <div class="notice">O envio automático é processado em segundo plano de forma segura. Suas credenciais e dados confidenciais do Gmail permanecem totalmente protegidos no servidor.</div>
+  </div>
+</section>
+
 <section class="card"><h2>2. Selecionar o documento PDF</h2><label for="pdfFile">Arquivo PDF para analisar</label><input id="pdfFile" type="file" accept="application/pdf,.pdf"><p id="fileInfo" class="hint">Selecione um PDF com texto pesquisável. PDFs digitalizados como imagem poderão exigir OCR.</p></section>
 <section class="card"><h2>3. Informar o campo a pesquisar</h2><label for="field">Nome do campo (ex.: Nome, Cliente, CPF, Matrícula)</label><input id="field" type="text" maxlength="120" placeholder="Ex.: Nome"><p class="hint">O aplicativo procura o rótulo do campo nas páginas e agrupa páginas pelo valor encontrado, por exemplo, “Nome: João Silva”.</p><div class="actions"><button id="process" class="green">Analisar e separar PDF</button><button id="termsBtn" class="light">Termo de uso</button><button id="activationBtn" class="light">Ativação</button><button id="closeWindowBtn" class="red">Fechar janela</button></div><div id="progressWrap" class="hidden"><p id="progressText" class="hint"></p><div class="progress"><div id="progressBar"></div></div></div><div id="status" class="status hidden" role="status" aria-live="polite"></div><div id="results"></div><div id="zipActions" class="actions hidden"><button id="zipBtn">Baixar todos os PDFs (.zip)</button></div></section>
 <section class="card"><h2>Como funciona</h2><ol><li>Selecione um PDF.</li><li>Informe o campo a pesquisar.</li><li>O aplicativo agrupa as páginas e gera um PDF por valor identificado.</li><li>Baixe os arquivos individualmente, em um ZIP ou envie por e-mail automaticamente.</li></ol><p class="hint">O processamento dos PDFs ocorre no navegador. Os envios de e-mail são realizados via API segura do Render.</p></section></main><footer>Assistente PDF Excellington · Os arquivos são mantidos no navegador até serem baixados ou a página ser fechada.</footer>
