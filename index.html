@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#123b65"><title>Assistente PDF Excellington</title>
 <style>
 :root{--b:#123b65;--b2:#1d5d91;--bg:#f2f6fa;--ink:#183247;--mut:#607487;--bd:#d5e0e9}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}header{background:linear-gradient(135deg,var(--b),var(--b2));color:#fff;padding:24px 14px;text-align:center}header h1{margin:0 0 8px}main{max-width:900px;margin:22px auto;padding:0 14px 30px}.card,.modal{background:#fff;border:1px solid var(--bd);border-radius:13px;padding:19px;margin-bottom:15px;box-shadow:0 5px 18px #163c5a0b}h2{font-size:1.15rem;color:var(--b);margin:0 0 13px}label{display:block;font-weight:bold;margin:12px 0 6px}input[type=text],input[type=email],input[type=file]{width:100%;padding:11px;border:1px solid #bdccd8;border-radius:8px;font:inherit}input[type=checkbox]{width:18px;height:18px;vertical-align:middle}.check{display:flex;align-items:center;gap:8px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hidden{display:none!important}button{border:0;border-radius:8px;padding:12px 15px;background:var(--b);color:white;font-weight:bold;font-size:1rem;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.green{background:#16734b}.red{background:#b53737}.light{background:#e5edf4;color:var(--b)}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.hint,.small{font-size:.9rem;color:var(--mut);line-height:1.5}.notice{background:#fff8e5;border-left:4px solid #d59a20;padding:11px;line-height:1.5}.status{white-space:pre-wrap;background:#eef5fa;padding:12px;border-radius:8px;line-height:1.5;margin-top:12px}.status.error{background:#fff0f0;color:#842020}.status.success{background:#eaf8f0;color:#155e3c}.progress{height:8px;background:#e0e8ef;border-radius:9px;overflow:hidden}.progress div{height:100%;width:0;background:#24865d}.result{border:1px solid var(--bd);border-radius:8px;padding:11px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px}.result strong{overflow-wrap:anywhere}.backdrop{position:fixed;inset:0;background:#061a2bd9;display:flex;align-items:center;justify-content:center;padding:14px;z-index:9}.modal{width:min(530px,100%);max-height:90vh;overflow:auto;margin:0}.modal p,.modal li{line-height:1.5}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:15px}.modal ul{padding-left:22px}footer{text-align:center;padding:10px;color:var(--mut);font-size:.85rem}@media(max-width:600px){.row{grid-template-columns:1fr}.result{align-items:flex-start;flex-direction:column}.actions button{width:100%}}
@@ -50,10 +50,16 @@ function parseDate(v){if(!v)return null;let d=new Date(v);if(!isNaN(d.getTime())
 function expiry(){return parseDate(localStorage.getItem(K.expiry))}function name(){return(localStorage.getItem(K.name)||'').trim()}
 function fmt(d){return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'})}
 function addDays(d,n){let x=new Date(d);x.setDate(x.getDate()+n);return x}
-function targetDate(){let e=expiry(),t;if(!e)t=addDays(new Date(),30);else{t=addDays(e,30);while(t.getTime()<=Date.now())t=addDays(t,30)}return endDay(t)}
+
+/* CORREÇÃO APLICADA: Lê estritamente a data atual armazenada para exibir na tela (sem avançar por antecipação) */
+function getStoredExpirationObj(){
+    let e = expiry();
+    return e ? e : endDay(addDays(new Date(), 30));
+}
+
 function expectedCode(n,d){let compact=n.replace(/\s+/g,'');return String(Math.pow(compact.length+d.getDate()+(d.getMonth()+1)+d.getFullYear(),3))}
 function expired(){let e=expiry();return !e||Date.now()>e.getTime()}
-function updateActivation(){ $('renewalDate').textContent=fmt(targetDate())}
+function updateActivation(){ $('renewalDate').textContent=fmt(getStoredExpirationObj())}
 function access(){if(!name()){show('nameModal');return false}hide('nameModal');if(expired()){updateActivation();show('activationModal');return false}hide('activationModal');return true}
 function initTrial(){if(!expiry())localStorage.setItem(K.expiry,endDay(addDays(new Date(),30)).toISOString())}
 function status(msg,kind=''){ $('status').textContent=msg;$('status').className='status'+(kind?' '+kind:'');show('status')}
@@ -147,7 +153,27 @@ async function sendEmailServer(f, idx){
 function download(blob,filename){let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),30000)}
 async function zip(){if(!files.length)return;$('zipBtn').disabled=true;try{let z=new JSZip();files.forEach(f=>z.file(f.filename,f.blob));download(await z.generateAsync({type:'blob'}),'Assistente_PDF_Excellington.zip')}catch(e){status('Não foi possível criar o ZIP. Baixe os PDFs individualmente.','error')}finally{$('zipBtn').disabled=false}}
 function saveName(){let n=$('userName').value.trim();if(!n){alert('Informe seu nome.');return}localStorage.setItem(K.name,n);hide('nameModal');initTrial();if(localStorage.getItem(K.terms)!=='accepted')show('termsModal');access()}
-function activate(){let d=targetDate(),c=$('code').value.trim();if(c!==expectedCode(name(),d)){$('activationError').textContent='Código inválido. Confira o nome cadastrado e a data de referência.';return}localStorage.setItem(K.expiry,d.toISOString());$('code').value='';$('activationError').textContent='';hide('activationModal');status('Aplicativo ativado com sucesso até '+fmt(d)+'.','success')}
+
+/* CORREÇÃO APLICADA: Valida com base estrita na data exibida e calcula o novo prazo (acumulando se no futuro ou a partir de hoje se vencida) */
+function activate(){
+  let currentExpiryObj = getStoredExpirationObj();
+  let c = $('code').value.trim();
+  
+  if(c !== expectedCode(name(), currentExpiryObj)){
+    $('activationError').textContent = 'Código inválido. Confira o nome cadastrado e a data de referência.';
+    return;
+  }
+  
+  let baseTime = currentExpiryObj.getTime() > Date.now() ? currentExpiryObj.getTime() : Date.now();
+  let targetDate = endDay(addDays(new Date(baseTime), 30));
+  
+  localStorage.setItem(K.expiry, targetDate.toISOString());
+  $('code').value = '';
+  $('activationError').textContent = '';
+  hide('activationModal');
+  status('Aplicativo ativado com sucesso até ' + fmt(targetDate) + '.', 'success');
+}
+
 function showTerms(){$('acceptTerms').checked=localStorage.getItem(K.terms)==='accepted';show('termsModal')}
 function closeAppWindow(){if(confirm('Deseja fechar o aplicativo?')){window.close();window.location.href='about:blank';}}
 
