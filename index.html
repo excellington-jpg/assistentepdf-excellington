@@ -10,7 +10,8 @@ header h1{margin:0 0 6px}
 main{max-width:900px;margin:22px auto;padding:0 14px 30px}
 .card,.modal{background:#fff;border:1px solid var(--bd);border-radius:13px;padding:19px;margin-bottom:15px;box-shadow:0 5px 18px #163c5a0b}
 h2{font-size:1.15rem;color:var(--b);margin:0 0 13px}label{display:block;font-weight:bold;margin:12px 0 6px}
-input[type=text],input[type=email],input[type=file]{width:100%;padding:11px;border:1px solid #bdccd8;border-radius:8px;font:inherit}
+input[type=text],input[type=email],textarea,input[type=file]{width:100%;padding:11px;border:1px solid #bdccd8;border-radius:8px;font:inherit}
+textarea{resize:vertical;min-height:90px}
 input[type=checkbox]{width:18px;height:18px;vertical-align:middle}.check{display:flex;align-items:center;gap:8px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hidden{display:none!important}
 button{border:0;border-radius:8px;padding:12px 15px;background:var(--b);color:white;font-weight:bold;font-size:1rem;cursor:pointer}
 button:disabled{opacity:.5;cursor:wait}.green{background:#16734b}.red{background:#b53737}.light{background:#e5edf4;color:var(--b)}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
@@ -51,6 +52,15 @@ footer{text-align:center;padding:10px;color:var(--mut);font-size:.85rem}
         <label for="domain">Domínio dos destinatários</label>
         <input id="domain" type="text" placeholder="@outlook.com">
       </div>
+    </div>
+    <div style="margin-top:12px;">
+      <label for="customSubject">Assunto personalizado (opcional)</label>
+      <input id="customSubject" type="text" placeholder="Ex: Fatura Referente ao Mês / Relatório de Produção">
+      <p class="hint">Será concatenado ao assunto padrão do e-mail.</p>
+    </div>
+    <div style="margin-top:12px;">
+      <label for="customBody">Texto do corpo do e-mail</label>
+      <textarea id="customBody" placeholder="Digite a mensagem principal que será enviada aos destinatários..."></textarea>
     </div>
     <p class="hint">O destinatário será formado pelo valor encontrado no campo pesquisado + domínio (ex: joaosilva@outlook.com).</p>
     <div class="notice">O envio automático é processado em segundo plano de forma segura.</div>
@@ -251,10 +261,18 @@ async function sendEmailServer(f, idx){
   try {
     let domainVal = $('domain').value.trim();
     let senderVal = $('sender').value.trim();
+    let customSubjectVal = $('customSubject').value.trim();
+    let customBodyVal = $('customBody').value.trim();
     
     let cleanName = norm(f.value).replace(/[^a-z0-9]/g,'');
     let recipient = cleanName ? cleanName + domainVal : 'destinatario' + domainVal;
     let base64Pdf = await blobToBase64(f.blob);
+
+    // Concatena o assunto personalizado ao padrão se preenchido
+    let finalSubject = customSubjectVal ? `${customSubjectVal} - Documento PDF - ${f.value}` : `Documento PDF - ${f.value}`;
+    
+    // Usa o texto personalizado se preenchido, caso contrário usa o padrão
+    let finalBody = customBodyVal ? customBodyVal : `Olá ${f.value},\n\nSegue em anexo o seu documento PDF faturado/processado pelo Assistente Excellington.\n\nAtenciosamente,\nEquipe Excellington`;
 
     let res = await fetch(`${RENDER_API_URL.replace(/\/+$/,'')}/send-email`, {
       method: 'POST',
@@ -262,8 +280,8 @@ async function sendEmailServer(f, idx){
       body: JSON.stringify({
         to: recipient,
         cc: senderVal,
-        subject: `Documento PDF - ${f.value}`,
-        text: `Olá ${f.value},\n\nSegue em anexo o seu documento PDF faturado/processado pelo Assistente Excellington.\n\nAtenciosamente,\nEquipe Excellington`,
+        subject: finalSubject,
+        text: finalBody,
         filename: f.filename,
         pdfBase64: base64Pdf
       })
