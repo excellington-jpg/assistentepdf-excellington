@@ -90,15 +90,26 @@ footer{text-align:center;padding:10px;color:var(--mut);font-size:.85rem}
   <div class="modal">
     <button class="modal-close-icon" id="closeActivationCrossBtn" title="Fechar">✕</button>
     <h2>Ativação do Assistente PDF Excellington</h2>
-    <p>Informe o código de ativação para liberar o aplicativo.</p>
-    <div class="notice" style="line-height: 1.6;">
+    
+    <div class="notice" style="line-height: 1.6; margin-bottom: 12px;">
       <b>Usuário cadastrado:</b> <span id="activationUserName" style="color:var(--b); font-weight:bold;">-</span><br>
       <b>Data de referência para o código:</b> <span id="renewalDate" style="color:var(--b); font-weight:bold;">—</span>
       <p class="small" style="margin-top:4px;">Use estes dados no gerador. O nome cadastrado será considerado sem espaços.</p>
     </div>
+
+    <!-- ORIENTAÇÃO ADICIONADA -->
+    <div class="notice" style="background:#eef5fa; border-left:4px solid var(--b); margin-bottom: 12px; line-height: 1.5;">
+      Para manter o sistema ativo por mais 30 dias, apoie o projeto com qualquer valor via Pix, envie o comprovante juntamente com as informações acima para <b>excellington@gmail.com</b> e insira o código de liberação recebido.
+    </div>
+
+    <div style="background:#e8f5e9; border: 1px solid #c8e6c9; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 12px; font-size: 0.9rem;">
+      Chave Pix para doação: <b>16250510850</b>
+    </div>
+
     <label for="code">Código de ativação</label>
     <input id="code" type="text" inputmode="numeric" autocomplete="off" placeholder="Digite o código gerado">
     <p id="activationError" class="small" style="color:#a52828"></p>
+    
     <div class="modal-actions">
       <button id="closeActivationBtn" class="light">Fechar / Continuar</button>
       <button id="activate">Ativar aplicativo</button>
