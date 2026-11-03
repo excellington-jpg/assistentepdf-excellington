@@ -220,7 +220,33 @@ function norm(s){return(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').t
 function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
 function safeName(s){s=(s||'Sem identificacao').replace(/[<>:"/\\|?*\u0000-\u001f]/g,'_').replace(/\s+/g,' ').trim().replace(/[. ]+$/g,'').slice(0,100);return s||'Sem identificacao'}
 function makeLines(items){let ls=[];for(const it of items){if(!it.str||!it.str.trim())continue;let y=it.transform?it.transform[5]:0,l=ls.find(a=>Math.abs(a.y-y)<3);if(!l){l={y,parts:[]};ls.push(l)}l.parts.push({x:it.transform?it.transform[4]:0,t:it.str})}return ls.sort((a,b)=>b.y-a.y).map(l=>l.parts.sort((a,b)=>a.x-b.x).map(a=>a.t).join(' ').replace(/\s+/g,' ').trim()).filter(Boolean)}
-function findValue(lines,field){const re=new RegExp('(^|[^\\p{L}\\p{N}])'+esc(field)+'\\s*(?::|：|=|–|—|-)?\\s*(.*)$','iu');for(let i=0;i<lines.length;i++){let m=lines[i].match(re);if(!m)continue;let v=(m[2]||'').replace(/^[\s:：=–—-]+/,'').trim();if(v){let cut=v.search(/\s+(?:cpf|cnpj|matricula|telefone|endereco|data de nascimento)\s*[:=]/i);if(cut>0)v=v.slice(0,cut).trim();return v.slice(0,180)||null}for(let j=i+1;j<Math.min(lines.length,i+3);j++)if(lines[j].trim())return lines[j].trim().slice(0,180)}return null}
+
+/* ==========================================================================
+   FUNÇÃO CORRIGIDA: Interrompe a captura ao encontrar outros rótulos na linha
+   ========================================================================== */
+function findValue(lines,field){
+  const re = new RegExp('(^|[^\\p{L}\\p{N}])' + esc(field) + '\\s*(?::|：|=|–|—|-)?\\s*(.*)$', 'iu');
+  for(let i=0; i<lines.length; i++){
+    let m = lines[i].match(re);
+    if(!m) continue;
+    let v = (m[2] || '').replace(/^[\s:：=–—-]+/, '').trim();
+    if(v){
+      // Corta o texto caso encontre outra tag na mesma linha (ex: UNIDADE, CPF, NOME, etc.)
+      let cut = v.search(/\s+(?:unidade|cpf|cnpj|matricula|telefone|endereco|data de nascimento|tipo)\s*[:=]/i);
+      if(cut > 0) v = v.slice(0, cut).trim();
+      return v.slice(0, 180) || null;
+    }
+    for(let j=i+1; j<Math.min(lines.length, i+3); j++){
+      if(lines[j].trim()){
+        let nextVal = lines[j].trim();
+        let cutNext = nextVal.search(/\s+(?:unidade|cpf|cnpj|matricula|telefone|endereco|data de nascimento|tipo)\s*[:=]/i);
+        if(cutNext > 0) nextVal = nextVal.slice(0, cutNext).trim();
+        return nextVal.slice(0, 180);
+      }
+    }
+  }
+  return null;
+}
 
 async function run(){if(busy)return;if(!access())return;let f=$('pdfFile').files[0],field=$('field').value.trim();if(!f){status('Selecione um arquivo PDF antes de continuar.','error');return}if(!field){status('Informe o nome do campo que deseja pesquisar.','error');return}
 let useEmail = $('emailOption').checked;
@@ -271,12 +297,9 @@ function openNativeMailClient(f){
   let finalSubject = customSubjectVal ? `${customSubjectVal} - Documento PDF - ${f.value}` : `Documento PDF - ${f.value}`;
   let finalBody = customBodyVal ? customBodyVal : `Olá ${f.value},\n\nSegue em anexo o seu documento PDF faturado/processado pelo Assistente Excellington.\n\nAtenciosamente,\nEquipe Excellington`;
 
-  // Baixa o arquivo PDF localmente para o usuário anexar
   download(f.blob, f.filename);
 
-  // Monta a URL mailto segura para o cliente de e-mail padrão do sistema
   let mailtoLink = `mailto:${encodeURIComponent(recipient)}?cc=${encodeURIComponent(senderVal)}&subject=${encodeURIComponent(finalSubject)}&body=${encodeURIComponent(finalBody)}`;
-  
   window.open(mailtoLink, '_blank');
 }
 
