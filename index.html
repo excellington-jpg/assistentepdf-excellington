@@ -218,29 +218,37 @@ function status(msg,kind=''){ $('status').textContent=msg;$('status').className=
 function progress(n,msg){show('progressWrap');$('progressBar').style.width=n+'%';$('progressText').textContent=msg}
 function norm(s){return(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
 function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-function safeName(s){s=(s||'Sem identificacao').replace(/[<>:"/\\|?*\u0000-\u001f]/g,'_').replace(/\s+/g,' ').trim().replace(/[. ]+$/g,'').slice(0,100);return s||'Sem identificacao'}
+function safeName(s){s=(s||'Sem identificacao').replace(/[<>:"/\\|?*\u0000-\u001f]/g,'_').replace(/\s+/g,' ').trim().replace(/[. ]+$/g,``).slice(0,100);return s||'Sem identificacao'}
 function makeLines(items){let ls=[];for(const it of items){if(!it.str||!it.str.trim())continue;let y=it.transform?it.transform[5]:0,l=ls.find(a=>Math.abs(a.y-y)<3);if(!l){l={y,parts:[]};ls.push(l)}l.parts.push({x:it.transform?it.transform[4]:0,t:it.str})}return ls.sort((a,b)=>b.y-a.y).map(l=>l.parts.sort((a,b)=>a.x-b.x).map(a=>a.t).join(' ').replace(/\s+/g,' ').trim()).filter(Boolean)}
 
 /* ==========================================================================
-   FUNÇÃO CORRIGIDA: Interrompe a captura ao encontrar outros rótulos na linha
+   FUNÇÃO AJUSTADA: Limpeza rigorosa de hífens e espaços iniciais/finais
    ========================================================================== */
-function findValue(lines,field){
+function findValue(lines, field){
   const re = new RegExp('(^|[^\\p{L}\\p{N}])' + esc(field) + '\\s*(?::|：|=|–|—|-)?\\s*(.*)$', 'iu');
   for(let i=0; i<lines.length; i++){
     let m = lines[i].match(re);
     if(!m) continue;
-    let v = (m[2] || '').replace(/^[\s:：=–—-]+/, '').trim();
+    let v = (m[2] || '').trim();
     if(v){
+      // Remove hífens e pontuações coladas no início do valor capturado
+      v = v.replace(/^[\s:：=–—\-\/]+/, '').trim();
+      
       // Corta o texto caso encontre outra tag na mesma linha (ex: UNIDADE, CPF, NOME, etc.)
       let cut = v.search(/\s+(?:unidade|cpf|cnpj|matricula|telefone|endereco|data de nascimento|tipo)\s*[:=]/i);
       if(cut > 0) v = v.slice(0, cut).trim();
+      
+      // Limpeza final de pontuações remanescentes nas pontas
+      v = v.replace(/^[\s\-–—]+|[\s\-–—]+$/g, '').trim();
       return v.slice(0, 180) || null;
     }
     for(let j=i+1; j<Math.min(lines.length, i+3); j++){
       if(lines[j].trim()){
         let nextVal = lines[j].trim();
+        nextVal = nextVal.replace(/^[\s:：=–—\-\/]+/, '').trim();
         let cutNext = nextVal.search(/\s+(?:unidade|cpf|cnpj|matricula|telefone|endereco|data de nascimento|tipo)\s*[:=]/i);
         if(cutNext > 0) nextVal = nextVal.slice(0, cutNext).trim();
+        nextVal = nextVal.replace(/^[\s\-–—]+|[\s\-–—]+$/g, '').trim();
         return nextVal.slice(0, 180);
       }
     }
