@@ -302,7 +302,7 @@ function openNativeMailClient(f){
   let cleanName = norm(f.value).replace(/[^a-z0-9]/g,'');
   let recipient = cleanName ? cleanName + domainVal : 'destinatario' + domainVal;
 
-  let finalSubject = customSubjectVal ? `${customSubjectVal} - Documento PDF - ${f.value}` : `Documento PDF - ${f.value}`;
+  let finalSubject = customSubjectVal ? `${customSubjectVal} - ${f.value}` : ` - ${f.value}`;
   let finalBody = customBodyVal ? customBodyVal : `Olá ${f.value},\n\nSegue em anexo o seu documento PDF faturado/processado pelo Assistente Excellington.\n\nAtenciosamente,\nEquipe Excellington`;
 
   download(f.blob, f.filename);
